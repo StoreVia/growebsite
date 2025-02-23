@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truth or Dare</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        button { margin: 10px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
+        #result { margin-top: 20px; font-size: 18px; font-weight: bold; }
+    </style>
+</head>
+<body>
+<h1>Truth or Dare</h1>
+<button onclick="fetchData('/dare')">Get a Dare</button>
+<button onclick="fetchData('/truth')">Get a Truth</button>
+<button onclick="fetchData('/fact')">Get a Fact</button>
+<button onclick="fetchData('/name')">Get a Name</button>
+
+<div id="result"></div>
+
+<script>
+    function fetchData(endpoint) {
+        fetch(endpoint)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = Object.values(data)[0];
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+</body>
+</html>
