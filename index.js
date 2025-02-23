@@ -1,44 +1,11 @@
-const express = require("express");
-const { join } = require("path");
-const session = require("express-session");
-const api = express();
+const Express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
 
-//apiInitializationStart
-api.use("/", express.static(join(__dirname, "..", "html")));
-api.use(session({ secret: "GroBot", resave: true, saveUninitialized: false }));
-//apiInitializationEnd
+const app = Express();
+const server = http.createServer(app);
+const io = new Server(server);
 
-//redirectFunctionStart
-function redirect(req, res, next){
-    const allowedPaths = ["/", "/dashboard", "/mobile", "/privacypolicy", "/termsofservice"];
-    const requestedPath = req.path;
-    if(!allowedPaths.includes(requestedPath)){
-        res.sendFile(join(__dirname, "..", "html", "others", "error.html"));
-    } else {
-        next();
-    }
-}
-//redirectFunctionEnd
+app.use("/", require("./server"));
 
-//routStart
-const rout = express.Router();
-rout.use(redirect);
-rout.get("/", (req, res) => {
-    res.sendFile(join(__dirname, "..", "html", "index.html"));
-});
-rout.get("/dashboard", (req, res) => {
-    res.sendFile(join(__dirname, "..", "html", "others", "dashboard.html"));
-});
-rout.get("/mobile", (req, res) => {
-    res.sendFile(join(__dirname, "..", "html", "others", "mobile.html"));
-});
-rout.get("/privacypolicy", (req, res) => {
-    res.sendFile(join(__dirname, "..", "html", "others", "privacypolicy.html"));
-});
-rout.get("/termsofservice", (req, res) => {
-    res.sendFile(join(__dirname, "..", "html", "others", "termsofservice.html"));
-});
-api.use(rout);
-//routEnd
-
-module.exports = api;
+server.listen(3000, () => console.log("Server running on port 3000"));
