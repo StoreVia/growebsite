@@ -3,67 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Truth or Dare API</title>
+    <title>Fun API</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            background: linear-gradient(120deg, #ff9a9e, #fad0c4);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
             text-align: center;
-            padding: 20px;
+            animation: backgroundMove 8s infinite alternate ease-in-out;
         }
-        .section {
-            margin: 20px 0;
+
+        @keyframes backgroundMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .sections {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .box {
+            background: rgba(255, 255, 255, 0.3);
             padding: 20px;
-            border: 1px solid #ccc;
             border-radius: 10px;
-            display: inline-block;
-            width: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            color: #fff;
         }
+
+        .box:hover {
+            transform: translateY(-5px);
+        }
+
         button {
-            margin: 10px;
+            margin-top: 10px;
             padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background: #ff758c;
+            color: white;
+            font-size: 1rem;
             cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #ff5252;
+        }
+
+        .footer {
+            margin-top: 20px;
+            color: white;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
+<div class="container">
+    <h1 class="title">Truth, Dare, Facts & Names</h1>
 
-<h1>Truth or Dare Game</h1>
+    <div class="sections">
+        <div class="box">
+            <h2>🤔 Truth</h2>
+            <p id="truth-text">Click below to reveal a truth!</p>
+            <button onclick="fetchData('/truth', 'truth-text')">Get Truth</button>
+        </div>
 
-<div class="section">
-    <h2>Play</h2>
-    <button onclick="fetchData('/dare', 'dareDisplay')">Get Dare</button>
-    <button onclick="fetchData('/truth', 'truthDisplay')">Get Truth</button>
-    <button onclick="fetchData('/fact', 'factDisplay')">Get Fact</button>
-    <button onclick="fetchData('/name', 'nameDisplay')">Get Name</button>
+        <div class="box">
+            <h2>😈 Dare</h2>
+            <p id="dare-text">Click below to reveal a dare!</p>
+            <button onclick="fetchData('/dare', 'dare-text')">Get Dare</button>
+        </div>
 
-    <p><strong>Dare:</strong> <span id="dareDisplay">Click to load</span></p>
-    <p><strong>Truth:</strong> <span id="truthDisplay">Click to load</span></p>
-    <p><strong>Fact:</strong> <span id="factDisplay">Click to load</span></p>
-    <p><strong>Name:</strong> <span id="nameDisplay">Click to load</span></p>
+        <div class="box">
+            <h2>📢 Fun Fact</h2>
+            <p id="fact-text">Click below to get a fact!</p>
+            <button onclick="fetchData('/fact', 'fact-text')">Get Fact</button>
+        </div>
+
+        <div class="box">
+            <h2>📛 Random Name</h2>
+            <p id="name-text">Click below to get a name!</p>
+            <button onclick="fetchData('/name', 'name-text')">Get Name</button>
+        </div>
+    </div>
 </div>
 
-<div class="section">
-    <h2>API</h2>
-    <button onclick="redirectTo('/dare')">Dare API</button>
-    <button onclick="redirectTo('/truth')">Truth API</button>
-    <button onclick="redirectTo('/fact')">Fact API</button>
-    <button onclick="redirectTo('/name')">Name API</button>
+<div class="footer">
+    <p>Made with ❤️ by You</p>
 </div>
 
 <script>
-    function fetchData(endpoint, elementId) {
-        fetch(endpoint)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById(elementId).innerText = Object.values(data)[0];
-            })
-            .catch(error => console.error("Error fetching data:", error));
-    }
+    async function fetchData(endpoint, elementId) {
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        const textElement = document.getElementById(elementId);
 
-    function redirectTo(endpoint) {
-        window.location.href = endpoint;
+        // Fade out effect
+        textElement.style.opacity = "0";
+
+        setTimeout(() => {
+            if (data.dare) textElement.innerText = data.dare;
+            else if (data.truth) textElement.innerText = data.truth;
+            else if (data.fact) textElement.innerText = data.fact;
+            else if (data.name) textElement.innerText = data.name;
+
+            // Fade in effect
+            textElement.style.opacity = "1";
+        }, 400);
     }
 </script>
-
 </body>
 </html>
