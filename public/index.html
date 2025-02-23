@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fun API</title>
+    <title>Fun API - Truth, Dare, Fact & Name</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
@@ -15,29 +15,34 @@
         }
 
         body {
-            background: linear-gradient(120deg, #ff9a9e, #fad0c4);
+            background: linear-gradient(270deg, #ff9a9e, #fad0c4, #ffdde1);
+            background-size: 400% 400%;
+            animation: gradientMove 8s infinite alternate ease-in-out;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             text-align: center;
-            animation: backgroundMove 8s infinite alternate ease-in-out;
+            overflow: hidden;
+            position: relative;
         }
 
-        @keyframes backgroundMove {
+        @keyframes gradientMove {
             0% { background-position: 0% 50%; }
             100% { background-position: 100% 50%; }
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.3);
             padding: 30px;
             border-radius: 15px;
             backdrop-filter: blur(10px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             width: 90%;
             max-width: 800px;
+            position: relative;
+            z-index: 2;
         }
 
         .title {
@@ -45,6 +50,12 @@
             font-weight: 600;
             margin-bottom: 20px;
             color: #fff;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .sections {
@@ -58,12 +69,15 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             color: #fff;
+            position: relative;
+            overflow: hidden;
         }
 
         .box:hover {
-            transform: translateY(-5px);
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
         button {
@@ -75,21 +89,68 @@
             color: white;
             font-size: 1rem;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: transform 0.3s ease, background 0.3s ease;
         }
 
         button:hover {
             background: #ff5252;
+            transform: scale(1.1);
         }
 
         .footer {
             margin-top: 20px;
             color: white;
             font-size: 0.9rem;
+            position: relative;
+            z-index: 2;
         }
+
+        /* Floating Images */
+        .floating-img {
+            position: absolute;
+            width: 120px;
+            opacity: 0.6;
+            animation: float 6s infinite ease-in-out alternate;
+        }
+
+        .floating-img:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            animation-duration: 5s;
+        }
+
+        .floating-img:nth-child(2) {
+            top: 20%;
+            right: 10%;
+            animation-duration: 7s;
+        }
+
+        .floating-img:nth-child(3) {
+            bottom: 10%;
+            left: 20%;
+            animation-duration: 6s;
+        }
+
+        .floating-img:nth-child(4) {
+            bottom: 15%;
+            right: 15%;
+            animation-duration: 8s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-20px) rotate(15deg); }
+        }
+
     </style>
 </head>
 <body>
+<!-- Floating Images -->
+<img src="https://cdn-icons-png.flaticon.com/512/3208/3208710.png" class="floating-img" alt="Dare">
+<img src="https://cdn-icons-png.flaticon.com/512/3176/3176363.png" class="floating-img" alt="Truth">
+<img src="https://cdn-icons-png.flaticon.com/512/3079/3079280.png" class="floating-img" alt="Fact">
+<img src="https://cdn-icons-png.flaticon.com/512/3183/3183462.png" class="floating-img" alt="Name">
+
 <div class="container">
     <h1 class="title">Truth, Dare, Facts & Names</h1>
 
