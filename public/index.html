@@ -33,6 +33,34 @@
             100% { background-position: 100% 50%; }
         }
 
+        /* Navigation Menu */
+        .navbar {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #ff5252;
+            transform: scale(1.1);
+        }
+
         .container {
             background: rgba(255, 255, 255, 0.3);
             padding: 30px;
@@ -145,6 +173,14 @@
     </style>
 </head>
 <body>
+<!-- Navigation Menu -->
+<div class="navbar">
+    <a href="/dare">Dare API</a>
+    <a href="/truth">Truth API</a>
+    <a href="/fact">Fact API</a>
+    <a href="/name">Name API</a>
+</div>
+
 <!-- Floating Images -->
 <img src="https://cdn-icons-png.flaticon.com/512/3208/3208710.png" class="floating-img" alt="Dare">
 <img src="https://cdn-icons-png.flaticon.com/512/3176/3176363.png" class="floating-img" alt="Truth">
@@ -189,20 +225,7 @@
     async function fetchData(endpoint, elementId) {
         const response = await fetch(endpoint);
         const data = await response.json();
-        const textElement = document.getElementById(elementId);
-
-        // Fade out effect
-        textElement.style.opacity = "0";
-
-        setTimeout(() => {
-            if (data.dare) textElement.innerText = data.dare;
-            else if (data.truth) textElement.innerText = data.truth;
-            else if (data.fact) textElement.innerText = data.fact;
-            else if (data.name) textElement.innerText = data.name;
-
-            // Fade in effect
-            textElement.style.opacity = "1";
-        }, 400);
+        document.getElementById(elementId).innerText = Object.values(data)[0];
     }
 </script>
 </body>
