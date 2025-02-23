@@ -54,17 +54,22 @@
             z-index: 1000;
         }
 
-        .running-man {
+        .loading-gif {
             width: 200px;
-            height: 50px;
-            background: url('https://i.gifer.com/VgYz.gif') no-repeat center;
-            background-size: contain;
-            animation: moveRight 1.5s infinite linear;
+            height: auto;
         }
 
-        @keyframes moveRight {
-            0% { transform: translateX(-50px); }
-            100% { transform: translateX(50px); }
+        /* Falling Objects */
+        .falling-object {
+            position: absolute;
+            top: -50px;
+            width: 50px;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 1; }
         }
 
         .container {
@@ -84,12 +89,6 @@
             font-weight: 600;
             margin-bottom: 20px;
             color: #fff;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
         }
 
         .sections {
@@ -135,8 +134,27 @@
             margin-top: 20px;
             color: white;
             font-size: 0.9rem;
-            position: relative;
-            z-index: 2;
+        }
+
+        /* API Links */
+        .api-links {
+            margin-top: 20px;
+        }
+
+        .api-links a {
+            display: inline-block;
+            text-decoration: none;
+            background: #00bcd4;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin: 5px;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .api-links a:hover {
+            background: #008ba3;
+            transform: scale(1.1);
         }
 
     </style>
@@ -144,8 +162,22 @@
 <body>
 <!-- Loading Screen -->
 <div class="loading-container" id="loading">
-    <div class="running-man"></div>
+    <img src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/c02eb525365495.563444b0aedee.gif" class="loading-gif">
 </div>
+
+<!-- Falling Objects -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        for (let i = 0; i < 10; i++) {
+            let img = document.createElement("img");
+            img.src = "https://cdn-icons-png.flaticon.com/512/616/616490.png";
+            img.classList.add("falling-object");
+            img.style.left = Math.random() * window.innerWidth + "px";
+            img.style.animationDuration = (Math.random() * 3 + 2) + "s";
+            document.body.appendChild(img);
+        }
+    });
+</script>
 
 <div class="container">
     <h1 class="title">Truth, Dare, Facts & Names</h1>
@@ -175,10 +207,13 @@
             <button onclick="fetchData('/name', 'name-text')">Get Name</button>
         </div>
     </div>
-</div>
 
-<div class="footer">
-    <p>Made with ❤️ by You</p>
+    <div class="api-links">
+        <a href="/truth">Truth API</a>
+        <a href="/dare">Dare API</a>
+        <a href="/fact">Fact API</a>
+        <a href="/name">Name API</a>
+    </div>
 </div>
 
 <script>
