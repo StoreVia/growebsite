@@ -33,6 +33,20 @@ app.get("/dare", (req, res) => res.json({ dare: dares[Math.floor(Math.random() *
 app.get("/truth", (req, res) => res.json({ truth: truth[Math.floor(Math.random() * truth.length)] }));
 app.get("/fact", (req, res) => res.json({ fact: fact[Math.floor(Math.random() * fact.length)] }));
 app.get("/name", (req, res) => res.json({ name: names[Math.floor(Math.random() * names.length)] }));
+app.get("/covid", async (req, res) => {
+    const response = await fetch("https://disease.sh/v3/covid-19/all");
+    const data = await response.json();
+    res.json({
+        cases: data.cases,
+        deaths: data.deaths,
+        recovered: data.recovered,
+        todayCases: data.todayCases,
+        todayDeaths: data.todayDeaths,
+        active: data.active,
+        critical: data.critical,
+        casesPerOneMillion: data.casesPerOneMillion
+    });
+});
 
 // Start the server
 const PORT = process.env.PORT || 3000;
